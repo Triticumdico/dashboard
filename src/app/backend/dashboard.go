@@ -8,7 +8,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Triticumdico/dashboard/args"
+	"github.com/Triticumdico/dashboard/src/app/backend/args"
+	"github.com/spf13/pflag"
 )
 
 var (
@@ -32,6 +33,8 @@ func main() {
 	log.Printf("Serving insecurely on HTTP port: %d", args.Holder.GetInsecurePort())
 	addr := fmt.Sprintf("%s:%d", args.Holder.GetInsecureBindAddress(), args.Holder.GetInsecurePort())
 	go func() { log.Fatal(http.ListenAndServe(addr, nil)) }()
+
+	select {}
 
 }
 

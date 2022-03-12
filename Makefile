@@ -36,3 +36,7 @@ endif
   elif [ $(GO_MINOR_VERSION) -lt $(MIN_GO_MINOR_VERSION) ] ; then \
 		exit 1; \
   fi
+
+.PHONY: test-backend
+test-backend: ensure-go
+	go test $(MAIN_PACKAGE)/...
