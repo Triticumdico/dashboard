@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/Triticumdico/dashboard/src/app/backend/args"
+	"github.com/Triticumdico/dashboard/src/app/backend/handler"
 	"github.com/spf13/pflag"
 )
 
@@ -29,6 +30,15 @@ func main() {
 	// Initializes dashboard arguments holder so we can read them in other packages
 	initArgHolder()
 
+	apiHandler, err := handler.CreateHTTPAPIHandler()
+	if err != nil {
+		handleFatalInitError(err)
+		log.Fatal(err)
+	}
+
+	// Run a HTTP server that serves static public files from './public' and handles API calls.
+	http.Handle("/api/", apiHandler)
+
 	// Listen for http or https
 	log.Printf("Serving insecurely on HTTP port: %d", args.Holder.GetInsecurePort())
 	addr := fmt.Sprintf("%s:%d", args.Holder.GetInsecureBindAddress(), args.Holder.GetInsecurePort())
@@ -42,4 +52,15 @@ func initArgHolder() {
 	builder := args.GetHolderBuilder()
 	builder.SetInsecurePort(*argInsecurePort)
 	builder.SetInsecureBindAddress(*argInsecureBindAddress)
+}
+
+/**
+ * Handles fatal init error that prevents server from doing any work. Prints verbose error
+ * message and quits the server.
+ */
+func handleFatalInitError(err error) {
+	log.Fatalf("Error while initializing connection to Kubernetes apiserver. "+
+		"This most likely means that the cluster is misconfigured (e.g., it has "+
+		"invalid apiserver certificates or service account's configuration) or the "+
+		"--apiserver-host param points to a server that does not exist. Reason: %s\n", err)
 }
