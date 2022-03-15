@@ -9,11 +9,13 @@ import (
 	"os"
 
 	"github.com/Triticumdico/dashboard/src/app/backend/args"
+	"github.com/Triticumdico/dashboard/src/app/backend/config"
 	"github.com/Triticumdico/dashboard/src/app/backend/handler"
 	"github.com/spf13/pflag"
 )
 
 var (
+	argConfigYamlPath      = pflag.String("config-yaml-path", "./config.yaml", "path to read yaml config file")
 	argInsecurePort        = pflag.Int("insecure-port", 9090, "port to listen to for incoming HTTP requests")
 	argInsecureBindAddress = pflag.IP("insecure-bind-address", net.IPv4(127, 0, 0, 1), "IP address on which to serve the --insecure-port, set to 127.0.0.1 for all interfaces")
 )
@@ -29,6 +31,8 @@ func main() {
 
 	// Initializes dashboard arguments holder so we can read them in other packages
 	initArgHolder()
+	// Initializes dashboard configurationq holder so we can read them in other packages
+	initConfig()
 
 	apiHandler, err := handler.CreateHTTPAPIHandler()
 	if err != nil {
@@ -52,6 +56,12 @@ func initArgHolder() {
 	builder := args.GetHolderBuilder()
 	builder.SetInsecurePort(*argInsecurePort)
 	builder.SetInsecureBindAddress(*argInsecureBindAddress)
+	builder.SetConfigYamlPath(*argConfigYamlPath)
+}
+
+func initConfig() {
+	builderConf := config.GetConfigBuilder()
+	builderConf.SetYamlConfig()
 }
 
 /**

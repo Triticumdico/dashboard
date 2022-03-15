@@ -22,6 +22,12 @@ func (self *holderBuilder) SetInsecureBindAddress(ip net.IP) *holderBuilder {
 	return self
 }
 
+// SetConfigYamlPath 'config-yaml-path' argument of Dashboard binary.
+func (self *holderBuilder) SetConfigYamlPath(path string) *holderBuilder {
+	self.holder.configYamlPath = path
+	return self
+}
+
 // GetHolderBuilder returns singleton instance of argument holder builder.
 func GetHolderBuilder() *holderBuilder {
 	return builder
