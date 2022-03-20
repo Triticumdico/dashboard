@@ -9,7 +9,7 @@ import (
 	"os"
 
 	"github.com/Triticumdico/dashboard/src/app/backend/args"
-	"github.com/Triticumdico/dashboard/src/app/backend/config"
+	"github.com/Triticumdico/dashboard/src/app/backend/client"
 	"github.com/Triticumdico/dashboard/src/app/backend/handler"
 	"github.com/spf13/pflag"
 )
@@ -33,6 +33,8 @@ func main() {
 	initArgHolder()
 	// Initializes dashboard configurationq holder so we can read them in other packages
 	initConfig()
+	// Initializes dashboard Datatabase connection so we can read them in other packages
+	initDatabase()
 
 	apiHandler, err := handler.CreateHTTPAPIHandler()
 	if err != nil {
@@ -60,8 +62,13 @@ func initArgHolder() {
 }
 
 func initConfig() {
-	builderConf := config.GetConfigBuilder()
+	builderConf := args.GetConfigBuilder()
 	builderConf.SetYamlConfig()
+}
+
+func initDatabase() {
+	ClientDb := client.NewClientDb()
+	ClientDb.OpenDbConnection("postgres")
 }
 
 /**
