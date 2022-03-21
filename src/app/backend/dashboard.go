@@ -76,8 +76,7 @@ func initDatabase() {
  * message and quits the server.
  */
 func handleFatalInitError(err error) {
-	log.Fatalf("Error while initializing connection to Kubernetes apiserver. "+
+	log.Fatalf("Error while initializing connection to Dashboard apiserver. "+
 		"This most likely means that the cluster is misconfigured (e.g., it has "+
-		"invalid apiserver certificates or service account's configuration) or the "+
-		"--apiserver-host param points to a server that does not exist. Reason: %s\n", err)
+		"invalid apiserver service configuration). Reason: %s\n", err)
 }

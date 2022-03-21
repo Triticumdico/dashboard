@@ -42,3 +42,7 @@ func (self *clientDb) OpenDbConnection(dbName string) *gorm.DB {
 func NewClientDb() *clientDb {
 	return ClientDb
 }
+
+func (self *clientDb) GetClientDb() *gorm.DB {
+	return self.clientDb
+}

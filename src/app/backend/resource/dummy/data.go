@@ -1,33 +1,25 @@
 package dummy
 
-type TableRows struct {
-	Rows []Row `json:"rows"`
+import (
+	"github.com/Triticumdico/dashboard/src/app/backend/client"
+)
+
+type Accounts struct {
+	Table []Account `json:"accounts"`
 }
 
-type Row struct {
-	AccountID string `json:"account_id"`
-	Score     int    `json:"score"`
+type Account struct {
+	Id         int    `json:"id"`
+	AccountUid string `json:"account_uid"`
 }
 
-func GetTableRows() (*TableRows, error) {
-	tableRows := &TableRows{
-		Rows: []Row{
-			{
-				AccountID: "account1",
-				Score:     2},
-			{
-				AccountID: "account2",
-				Score:     7},
-			{
-				AccountID: "account3",
-				Score:     5},
-			{
-				AccountID: "account4",
-				Score:     9},
-			{
-				AccountID: "account5",
-				Score:     3},
-		},
-	}
-	return tableRows, nil
+var account Accounts
+
+func GetTableRows() (Accounts, error) {
+
+	db := client.ClientDb.GetClientDb()
+
+	db.Find(&account.Table)
+
+	return account, nil
 }

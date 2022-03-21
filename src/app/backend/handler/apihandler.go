@@ -31,7 +31,7 @@ func CreateHTTPAPIHandler() (http.Handler, error) {
 	apiV1Ws.Route(
 		apiV1Ws.GET("/test").
 			To(apiHandler.handleGetTest).
-			Writes(dummy.TableRows{}))
+			Writes(dummy.Accounts{}))
 
 	return wsContainer, nil
 
